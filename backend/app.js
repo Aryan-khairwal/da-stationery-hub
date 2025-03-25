@@ -1,15 +1,15 @@
-const cors = require("cors")
-const dotenv = require("dotenv").config()
-const cookieParser = require("cookie-parser")
 const express = require("express")
+const cors = require("cors")
+const productRoutes = require("./routes/productRoutes")
+require("dotenv").config()
+
 const app = express()
-app.use(express.urlencoded({ extended: true }))
-app.use(cors())
 
+app.use(express.json()) // Parse JSON body
+app.use(cors()) //frontend access
+
+app.use("/api", productRoutes)
 app.get("/", (req, res) => {
-  res.send("<h1>Hello World!")
+  res.send("Hello World :D")
 })
-
-app.listen(process.env.PORT, () => {
-  console.log("server is listening....")
-})
+module.exports = app
