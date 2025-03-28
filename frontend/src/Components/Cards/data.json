@@ -1,0 +1,34 @@
+[
+{
+    "_id": "67e23ea58d028409509f6b2a",
+    "name": "pen",
+    "image": "https://www.submarinepens.com/cdn/shop/files/917Black1.jpg?v=1704541908",
+    "price": 10,
+    "description": "This is very nice pen.",
+    "__v": 0
+  },
+  {
+    "_id": "67e2429a8d028409509f6b2c",
+    "name": "notebook",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOs3iEeui712dlKDqdjcTJ3uTGNsz3NvdG0g&s",
+    "price": 60,
+    "description": "It has very smooth paper.",
+    "__v": 0
+  },
+  {
+    "_id": "67e242f88d028409509f6b2e",
+    "name": "pencil",
+    "image": "https://www.faber-castell.ca/-/media/Products/Product-Repository/Perfect-pencil/24-24-01-Pencil/118347-Spare-pencil-DESIGN-for-P-GP-black/Images/118347_10_PM1.ashx?bc=ffffff&as=0&h=900&w=900&sc_lang=en-CA&hash=5194C8E376B329C6B6ED2A242747ADBD",
+    "price": 8,
+    "description": "It is very dark pencil.",
+    "__v": 0
+  },
+  {
+    "_id": "67e243438d028409509f6b30",
+    "name": "clear bag",
+    "image": "https://cdn.moglix.com/p/s7myEvUWcDWoZ-xxlarge.jpg",
+    "price": 20,
+    "description": "keep your documents safe.",
+    "__v": 0
+  }
+]
