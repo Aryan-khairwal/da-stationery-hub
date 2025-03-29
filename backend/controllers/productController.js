@@ -8,5 +8,20 @@ const getProducts = async (req, res) => {
     res.status(500).json({ errorMSG: error })
   }
 }
+const postProducts = async (req, res) => {
+  const { name, price, description, image } = req.body
+  try {
+    const response = await productModel.create({
+      name,
+      price,
+      description,
+      image,
+    })
+    console.log(response)
+    res.status(201).json({ message: "Product added successfully" })
+  } catch (error) {
+    res.status(500).json({ error_message: error })
+  }
+}
 
-module.exports = { getProducts }
+module.exports = { getProducts, postProducts }
