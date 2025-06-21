@@ -8,18 +8,30 @@ const {
   logoutUser,
   getUser,
   updateUser,
+  getUserById,
+  deleteUser,
+  deleteUserById,
+  updateUserById,
 } = require("../controllers/userController")
 
 router
   .route("/")
-  .post(createUser)
   .get(authenticateUser, authorizeAdmin, getAllUsers)
+  .post(createUser)
+  .delete(authenticateUser, deleteUser)
 
 router
   .route("/profile")
   .get(authenticateUser, getUser)
   .put(authenticateUser, updateUser)
+
 router.post("/login", loginUser)
 router.post("/logout", logoutUser)
+
+router
+  .route("/:id")
+  .get(authenticateUser, authorizeAdmin, getUserById)
+  .put(authenticateUser, authorizeAdmin, updateUserById)
+  .delete(authenticateUser, authorizeAdmin, deleteUserById)
 
 module.exports = router

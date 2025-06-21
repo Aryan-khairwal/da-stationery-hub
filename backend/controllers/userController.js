@@ -4,7 +4,7 @@ const { hashPassword, comparePassword } = require("../utils/bcrypt")
 const createToken = require("../utils/jwtToken")
 
 const createUser = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body
+  const { username, email, password, isAdmin } = req.body
   if (!username || !email || !password) {
     throw new Error("Please fill all inputs")
   }
@@ -20,6 +20,7 @@ const createUser = asyncHandler(async (req, res) => {
     username,
     email,
     password: hashedPassword,
+    isAdmin,
   })
   if (response) {
     res.status(201).json(response)
@@ -52,6 +53,14 @@ const updateUser = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
     })
+  } else throw new Error("cannot find the user")
+})
+const deleteUser = asyncHandler(async (req, res) => {
+  const user = await userModel.findOneAndDelete({ _id: req.user._id })
+  if (user) {
+    res.status(204).send("user deleted")
+  } else {
+    throw new Error("cannot delete")
   }
 })
 const loginUser = asyncHandler(async (req, res) => {
@@ -78,11 +87,54 @@ const logoutUser = asyncHandler(async (req, res) => {
     .cookie("jwt", "", { httpOnly: true, expires: new Date(0) })
     .json({ message: "Logout successful" })
 })
+
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await userModel.findById(req.params.id)
+  if (user) {
+    res.status(200).json(user)
+  } else {
+    throw new Error("Cannot find the user")
+  }
+})
+const updateUserById = asyncHandler(async (req, res) => {
+  const user = await userModel.findById(req.params.id)
+  if (user) {
+    user.username = req.body.username || user.username
+    user.email = req.body.email || user.email
+    user.isAdmin = req.body.isAdmin || user.isAdmin
+
+    if (req.body.password) {
+      const hashedPassword = await hashPassword(req.body.password)
+      user.password = hashedPassword
+    }
+    const updatedUser = await user.save()
+    res.json({
+      username: updatedUser.username,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    })
+  } else {
+    throw new Error("cannot find the user")
+  }
+})
+const deleteUserById = asyncHandler(async (req, res) => {
+  const user = await userModel.findOneAndDelete({ _id: req.params.id })
+  if (user) {
+    res.status(204).send("user deleted")
+  } else {
+    throw new Error("User not found ")
+  }
+})
+
 module.exports = {
   createUser,
+  getUser,
   loginUser,
+  updateUser,
+  deleteUser,
   logoutUser,
   getAllUsers,
-  getUser,
-  updateUser,
+  getUserById,
+  updateUserById,
+  deleteUserById,
 }
