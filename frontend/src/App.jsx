@@ -1,12 +1,15 @@
 import React from "react"
-import "./App.css"
-import Card from "./Components/Cards/Card"
-
+import { ToastContainer } from "react-toastify"
+import { Outlet } from "react-router-dom"
+import "react-toastify/dist/ReactToastify.css"
 function App() {
   return (
     <>
-      <h1>hello world :D</h1>
-      <Card />
+      <ToastContainer />
+      <h1>Hello</h1>
+      <main className=' py-4'>
+        <Outlet />
+      </main>
     </>
   )
 }

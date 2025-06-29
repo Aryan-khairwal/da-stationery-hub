@@ -133,6 +133,57 @@ const getAllProducts = asyncHandler(async (req, res) => {
     return res.status(500).json({ message: error.message })
   }
 })
+
+const addReview = asyncHandler(async (req, res) => {
+  const { rating, title, comment } = req.body
+  try {
+    const product = await productModel.findById(req.params.id)
+    if (product) {
+      const alreadyReviewed = product.reviews.find(
+        (review) => review.user.toString() === req.user._id
+      )
+      if (alreadyReviewed) {
+        return res.status(400).json({ message: "already reviewed" })
+      }
+      const review = {
+        username: req.user.username,
+        user: req.user._id,
+        rating,
+        title,
+        comment,
+      }
+      product.reviews.push(review)
+      product.reviewsCount = product.reviews.length
+
+      product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length
+      await product.save()
+      res.status(201).json({ message: "Review added" })
+    } else {
+      return res.status(404).json({ message: "product not found" })
+    }
+  } catch (error) {
+    return res.status(400).json({ message: error.message })
+  }
+})
+
+const fetchTopProducts = asyncHandler(async (req, res) => {
+  try {
+    const products = await productModel.find({}).sort({ rating: -1 }).limit(4)
+    return res.status(200).json(products)
+  } catch (error) {
+    return res.status(400).json(error.message)
+  }
+})
+const fetchNewProducts = asyncHandler(async (req, res) => {
+  try {
+    const products = await productModel.find().sort({ _id: -1 }).limit(5)
+    return res.status(200).json(products)
+  } catch (error) {
+    return res.status(400).json(error.message)
+  }
+})
 module.exports = {
   getProducts,
   createProduct,
@@ -140,4 +191,7 @@ module.exports = {
   deleteProduct,
   getProductById,
   getAllProducts,
+  addReview,
+  fetchTopProducts,
+  fetchNewProducts,
 }
